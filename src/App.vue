@@ -20,7 +20,15 @@
                        <v-icon>account_circle</v-icon>
                    </v-list-tile-action>
                    <v-list-tile-content>
-                       <v-list-tile-title>Login/Register</v-list-tile-title>
+                       <v-list-tile-title>Login</v-list-tile-title>
+                   </v-list-tile-content>
+               </v-list-tile>
+               <v-list-tile v-if="!user" to="/register">
+                   <v-list-tile-action>
+                       <v-icon>assignment</v-icon>
+                   </v-list-tile-action>
+                   <v-list-tile-content>
+                       <v-list-tile-title>Register</v-list-tile-title>
                    </v-list-tile-content>
                </v-list-tile>
                <v-list-tile to="/leaderboard">
@@ -54,11 +62,9 @@
             <v-toolbar-title>StarStats</v-toolbar-title>
         </v-toolbar>
         <v-content>
-            <v-container fluid fill-height>
+            <v-container fluid fill-height fill-width>
                 <v-layout justify-center align-center>
-                    <v-flex shrink>
-                        <router-view />
-                    </v-flex>
+                    <router-view />
                 </v-layout>
             </v-container>
         </v-content>

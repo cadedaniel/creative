@@ -1,7 +1,8 @@
+import CurrentStreamers from './views/CurrentStreamers.vue'
 import Leaderboard from './views/Leaderboard.vue'
 import Login from './views/Login.vue'
-import CurrentStreamers from './views/CurrentStreamers.vue'
 import PopularVideos from './views/PopularVideos.vue'
+import Register from './views/Register.vue'
 import Router from 'vue-router'
 import Vue from 'vue'
 
@@ -20,6 +21,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
     },
     {
       path: '/current_streamers',

@@ -4,7 +4,7 @@ module.exports = {
             disableHostCheck: true,
             proxy: {
                 '^/api': {
-                    target: 'http://cadedaniel.com:8888',
+                    target: 'http://creative.cadedaniel.com:8882',
                 }
             }
         },

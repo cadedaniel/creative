@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   username: String,
   password: String,
   name: String,
+  mmr: String,
   tokens: [],
 });
 
@@ -82,9 +83,9 @@ const User = mongoose.model('User', userSchema);
 
 // create a new user
 router.post('/', async (req, res) => {
-  if (!req.body.username || !req.body.password || !req.body.name)
+  if (!req.body.username || !req.body.password || !req.body.name || !req.body.mmr)
     return res.status(400).send({
-      message: "Name, username, and password are required."
+      message: "Name, username, mmr, and password are required."
     });
 
   try {
@@ -102,6 +103,7 @@ router.post('/', async (req, res) => {
     const user = new User({
       username: req.body.username,
       password: req.body.password,
+      mmr: req.body.mmr,
       name: req.body.name
     });
     await user.save();

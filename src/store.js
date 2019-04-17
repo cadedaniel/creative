@@ -7,11 +7,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: null,
-    photos: [],
-    singularPhoto: [],
-    currentComments: [],
   },
   mutations: {
+      /*
     setUser(state, user) {
       state.user = user;
     },
@@ -24,7 +22,7 @@ export default new Vuex.Store({
     setCurrentComments(state, comments) {
         state.currentComments = comments;
         // TODO sort
-    },
+    },*/
   },
   actions: {
     async register(context, data) {
