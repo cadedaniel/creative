@@ -1,12 +1,12 @@
 <template>
     <div>
-      login page
+      current streamers
     </div>
 </template>
 
 <script>
 export default {
-  name: 'login',
+  name: 'current_streamers',
   components: {
   },
   data() {

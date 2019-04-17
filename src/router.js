@@ -1,8 +1,7 @@
-import Home from './views/Home.vue'
-import PhotoTheater from './views/PhotoTheater.vue'
+import Leaderboard from './views/Leaderboard.vue'
 import Login from './views/Login.vue'
-import MyPage from './views/MyPage.vue'
-import Register from './views/Register.vue'
+import CurrentStreamers from './views/CurrentStreamers.vue'
+import PopularVideos from './views/PopularVideos.vue'
 import Router from 'vue-router'
 import Vue from 'vue'
 
@@ -13,29 +12,24 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home
+      path: '/leaderboard',
+      name: 'leaderboard',
+      component: Leaderboard
     },
     {
-	path: '/mypage',
-	name: 'mypage',
-	component: MyPage,
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
-	path: '/register',
-	name: 'register',
-        component: Register
+      path: '/current_streamers',
+      name: 'current_streamers',
+      component: CurrentStreamers
     },
     {
-        path: '/login',
-        name: 'login',
-        component: Login
+      path: '/popular_videos',
+      name: 'popular_videos',
+      component: PopularVideos
     },
-    {
-        path: '/phototheater',
-        name: 'phototheater',
-        component: PhotoTheater
-    }
   ]
 });

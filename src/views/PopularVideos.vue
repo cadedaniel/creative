@@ -1,12 +1,12 @@
 <template>
     <div>
-      login page
+      popular videos
     </div>
 </template>
 
 <script>
 export default {
-  name: 'login',
+  name: 'popular_videos',
   components: {
   },
   data() {

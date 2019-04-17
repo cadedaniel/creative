@@ -1,12 +1,12 @@
 <template>
     <div>
-      login page
+      hello there
     </div>
 </template>
 
 <script>
 export default {
-  name: 'login',
+  name: 'leaderboard',
   components: {
   },
   data() {
