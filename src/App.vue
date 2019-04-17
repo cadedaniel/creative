@@ -60,6 +60,10 @@
         <v-toolbar app fixed clipped-left>
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title>StarStats</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items class="hidden-sm-and-down">
+                <v-btn flat v-if="user" @click='logout'>Log out</v-btn>
+            </v-toolbar-items>
         </v-toolbar>
         <v-content>
             <v-container fluid fill-height fill-width>
@@ -78,10 +82,27 @@
 export default {
     data: () => ({
         drawer: null,
-        user: null,
     }),
     props: {
         source: String
+    },
+    computed: {
+        user() {
+            return this.$store.state.user;
+        }
+    },
+    methods: {
+        async logout() {
+
+            try {
+                this.error = await this.$store.dispatch("logout");
+                if (this.error === "") {
+                    this.$router.push('login');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 }
 </script>

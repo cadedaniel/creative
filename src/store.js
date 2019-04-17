@@ -9,10 +9,10 @@ export default new Vuex.Store({
     user: null,
   },
   mutations: {
-      /*
     setUser(state, user) {
       state.user = user;
     },
+    /*
     setPhotos(state, photos) {
         state.photos = photos;
     },

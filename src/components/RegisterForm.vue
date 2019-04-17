@@ -19,9 +19,9 @@
                 <v-text-field id="password" prepend-icon="lock" v-model="password" label="Password" type="password"></v-text-field>
                 <v-text-field prepend-icon="compare_arrows" v-model="mmr" label="Approximate MMR" type="text"></v-text-field>
                 <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn type='submit' color="primary">Register</v-btn>
-        </v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn type='submit' color="primary">Register</v-btn>
+                </v-card-actions>
             </v-form>
         </v-card-text>
     </v-card>
@@ -43,7 +43,7 @@ export default {
     },
     methods: {
         async register() {
-            
+
             try {
                 this.error = await this.$store.dispatch("register", {
                     name: this.realname,
