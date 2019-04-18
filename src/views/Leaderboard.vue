@@ -1,6 +1,7 @@
 <template>
     <div>
         <h2>StarCraft Leaderboard</h2>
+        <div>This data is all mocked right now because the company behind StarCraft accidentally depcrecated the API for getting rank / MMR.</div>
         <v-data-table v-if="ranks != null" hide-actions :headers="headers" :items="ranks" class="elevation-1">
             <template v-slot:items="props">
                 <td>{{ props.item.rank }}</td>
