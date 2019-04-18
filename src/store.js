@@ -9,6 +9,8 @@ export default new Vuex.Store({
     user: localStorage.getItem('authuser') || null,
     leaderboard: null,
     twitchStreams: null,
+    submissions: null,
+    loadingSubmissions: true
   },
   mutations: {
     setUser(state, user) {
@@ -28,6 +30,13 @@ export default new Vuex.Store({
     setTwitchStreams(state, twitchStreams) {
         const sorted = [...twitchStreams].sort((first, second) => first.viewer_count < second.viewer_count)
         state.twitchStreams = sorted;
+    },
+    setSubmissions(state, submissions) {
+        state.submissions = submissions;
+        state.loadingSubmissions = false
+    },
+    setLoadingSubmissions(state, value) {
+        state.loadingSubmissions = value;
     }
   },
   actions: {
@@ -88,6 +97,52 @@ export default new Vuex.Store({
         return "";
       } catch (error) {
         return "";
+      }
+    },
+    async submitLink(context, data) {
+      try {
+        await axios.post("/api/submissions", data);
+        this.dispatch("getSubmissions");
+        return "";
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async getSubmissions(context) {
+      try {
+        context.commit('setLoadingSubmissions', true);
+        const response = await axios.get("/api/submissions");
+        context.commit('setSubmissions', response.data);
+        return "";
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async upvoteSubmission(context, data) {
+      try {
+        await axios.post("/api/submissions/" + data.id + '/upvoters');
+        this.dispatch("getSubmissions");
+        return "";
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async downvoteSubmission(context, data) {
+      try {
+        await axios.post("/api/submissions/" + data.id + '/downvoters');
+        this.dispatch("getSubmissions");
+        return "";
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async deleteSubmission(context, data) {
+      try {
+        await axios.delete("/api/submissions/" + data.id);
+        this.dispatch("getSubmissions");
+        return "";
+      } catch (error) {
+        return error.response.data.message;
       }
     },
   }

@@ -1,7 +1,5 @@
 <template>
     <div>
-
-
         <h2>StarCraft Twitch Streams</h2>
         <v-data-table v-if="twitchStreams != null" hide-actions disable-initial-sort :headers="headers" :items="twitchStreams" class="elevation-1">
             <template v-slot:items="props">

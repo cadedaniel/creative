@@ -103,6 +103,9 @@ export default {
                 console.log(error);
             }
         }
+    },
+    async created() {
+        await this.$store.dispatch('getUser');
     }
 }
 </script>

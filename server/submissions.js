@@ -7,14 +7,11 @@ const users = require('./users.js')
 const User = users.model;
 
 const submissionSchema = new mongoose.Schema({
-  author: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User'
-  },
+  author: String,
   link: String,
   description: String,
-  upvoters: Array,
-  downvoters: Array,
+  upvoters: { type: Array, default: []},
+  downvoters: { type: Array, default: []},
 });
 
 const Submission = mongoose.model('Submission', submissionSchema);
@@ -27,7 +24,7 @@ router.post('/', auth.verifyToken, User.verify, async (req, res) => {
     }
 
     const submission = new Submission({
-        author: req.user,
+        author: req.user.username,
         link: req.body.link,
         description: req.body.description,
         upvoters: [],
@@ -47,8 +44,20 @@ router.post('/', auth.verifyToken, User.verify, async (req, res) => {
 router.get('/', async (req, res) => {
 
     // going to want pagination I think.
+    //
+    const submissions = (await Submission.find({})).map(s => {
+        // Yes, this is a horrible idea for producton. n < 100.
+        return {
+            id: s._id,
+            author: s.author,
+            link: s.link,
+            description: s.description,
+            upvoter_count: (s.upvoters || []).length,
+            downvoter_count: (s.downvoters || []).length,
+        };
+    });
 
-    return res.sendStatus(200);
+    return res.status(200).send(submissions);
 });
 
 // Add yourself as an upvoter TODO need to do these when I have test data.
@@ -58,9 +67,13 @@ router.post('/:id/upvoters', auth.verifyToken, User.verify, async (req, res) => 
       const submission = await Submission.findOne({
           _id: req.params.id
       });
+        
+      if (submission.upvoters.includes(req.user.id)) {
+        return res.status(403).send({message: 'You already upvoted this submission'});
+      }
 
-      console.log(req.user.id);
-
+      submission.upvoters.push(req.user.id);
+      await submission.save();
       return res.sendStatus(202);
     } catch (error) {
         console.log(error);
@@ -70,12 +83,41 @@ router.post('/:id/upvoters', auth.verifyToken, User.verify, async (req, res) => 
 
 // Add yourself as a downvoter
 router.post('/:id/downvoters', auth.verifyToken, User.verify, async (req, res) => {
-    return res.sendStatus(200);
+    try {
+      const submission = await Submission.findOne({
+          _id: req.params.id
+      });
+        
+      if (submission.downvoters.includes(req.user.id)) {
+        return res.status(403).send({message: 'You already downvoted this submission'});
+      }
+      submission.downvoters.push(req.user.id);
+      await submission.save();
+      return res.sendStatus(202);
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(500);
+    }
 });
 
 // Delete your submission
 router.delete("/:id", auth.verifyToken, User.verify, async (req, res) => {
-    return res.sendStatus(500);
+
+    try {
+      const submission = await Submission.findOne({
+          _id: req.params.id
+      });
+
+      if (submission.author !== req.user.username) {
+        return res.status(403).send({message: 'You do not have permission to delete that submission'});
+      }
+
+      await submission.remove();
+      return res.sendStatus(202);
+    } catch(error) {
+        console.log(error);
+        return res.sendStatus(500);
+    }
 });
 
 module.exports = {
