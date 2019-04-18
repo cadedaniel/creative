@@ -6,23 +6,18 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: null,
+    user: localStorage.getItem('authuser') || null,
   },
   mutations: {
     setUser(state, user) {
       state.user = user;
+
+      if (user === null) {
+        localStorage.removeItem('authuser');
+      } else {
+        localStorage.setItem('authuser', user)
+      }
     },
-    /*
-    setPhotos(state, photos) {
-        state.photos = photos;
-    },
-    setSingularPhoto(state, photo) {
-        state.singularPhoto = photo;
-    },
-    setCurrentComments(state, comments) {
-        state.currentComments = comments;
-        // TODO sort
-    },*/
   },
   actions: {
     async register(context, data) {
