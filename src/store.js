@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: localStorage.getItem('authuser') || null,
+    leaderboard: null,
   },
   mutations: {
     setUser(state, user) {
@@ -18,6 +19,10 @@ export default new Vuex.Store({
         localStorage.setItem('authuser', user)
       }
     },
+
+    setLeaderboard(state, leaderboard) {
+        state.leaderboard = leaderboard;
+    }
   },
   actions: {
     async register(context, data) {
@@ -56,59 +61,14 @@ export default new Vuex.Store({
         return "";
       }
     },
-    async upload(context, data) {
-        try {
-            await axios.post('/api/photos', data);
-            return "";
-        } catch (error) {
-            return error.response.data.message;
-        }
-    },
-    async getMyPhotos(context) {
-        try {
-            let response = await axios.get("/api/photos");
-            context.commit('setPhotos', response.data);
-            return "";
-        } catch (error) {
-            return "";
-        }
-    },
-    async getAllPhotos(context) {
-        try {
-            let response = await axios.get("/api/photos/all");
-            context.commit('setPhotos', response.data);
-            return "";
-        } catch (error) {
-            return "";
-        }
-    },
-    async getSinglePhoto(context, { id }) {
-        try {
-            const response = await axios.get("/api/photos/" + id);
-            context.commit('setSingularPhoto', [response.data]);
-            return "";
-        } catch (error) {
-            return "";
-        }
-    },
-    async addComment(context, data) {
-        try {
-            await axios.post("/api/comments/", data);
-            this.dispatch('getComments', { id: this.state.singularPhoto[0]._id });
-            return "";
-        } catch (error) {
-            return "";
-        }
-    },
-
-    async getComments(context, data) {
-        try {
-            const response = await axios.get("/api/comments/" + data.id);
-            context.commit('setCurrentComments', response.data);
-            return "";
-        } catch (error) {
-            return "";
-        }
+    async getLeaderboard(context) {
+      try {
+        let response = await axios.get("/api/users/leaderboard");
+        context.commit('setLeaderboard', response.data);
+        return "";
+      } catch (error) {
+        return "";
+      }
     },
   }
 });

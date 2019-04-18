@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema({
   password: String,
   name: String,
   mmr: String,
+  country: String,
+  main_race: String,
   tokens: [],
 });
 
@@ -83,9 +85,9 @@ const User = mongoose.model('User', userSchema);
 
 // create a new user
 router.post('/', async (req, res) => {
-  if (!req.body.username || !req.body.password || !req.body.name || !req.body.mmr)
+  if (!req.body.username || !req.body.password || !req.body.name || !req.body.mmr || !req.body.country || !req.body.main_race)
     return res.status(400).send({
-      message: "Name, username, mmr, and password are required."
+      message: "Name, username, password, mmr, country, and main_race are required."
     });
 
   try {
@@ -104,7 +106,9 @@ router.post('/', async (req, res) => {
       username: req.body.username,
       password: req.body.password,
       mmr: req.body.mmr,
-      name: req.body.name
+      name: req.body.name,
+      country: req.body.country,
+      main_race: req.body.main_race,
     });
     await user.save();
     login(user, res);
@@ -172,6 +176,25 @@ router.delete("/", auth.verifyToken, User.verify, async (req, res) => {
 // Get current user if logged in.
 router.get('/', auth.verifyToken, User.verify, async (req, res) => {
   return res.send(req.user);
+});
+
+router.get('/leaderboard', async (req, res) => {
+  let c = 1;
+  const users = await User.find({}, 'username name country mmr main_race').sort({mmr: -1})
+
+      console.log(users);
+  const ranked = users.map(u => {
+    let r = {
+        username: u.username,
+        name: u.name,
+        country: u.country,
+        main_race: u.main_race,
+        mmr: u.mmr,
+        rank: c++,
+    };
+    return r;
+  });
+  return res.send(ranked);
 });
 
 module.exports = {
