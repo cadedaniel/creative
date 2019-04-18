@@ -1,4 +1,5 @@
 import CurrentStreamers from './views/CurrentStreamers.vue'
+import Profile from './views/Profile.vue'
 import Leaderboard from './views/Leaderboard.vue'
 import Login from './views/Login.vue'
 import PopularVideos from './views/PopularVideos.vue'
@@ -14,7 +15,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'login',
+      name: 'home',
       component: Login
     },
     {
@@ -41,6 +42,11 @@ export default new Router({
       path: '/popular_videos',
       name: 'popular_videos',
       component: PopularVideos
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile
     },
   ]
 });

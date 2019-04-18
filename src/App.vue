@@ -66,7 +66,7 @@
             </v-toolbar-items>
         </v-toolbar>
         <v-content>
-            <v-container fluid fill-height fill-width>
+            <v-container fluid>
                 <v-layout justify-center align-center>
                     <router-view />
                 </v-layout>
