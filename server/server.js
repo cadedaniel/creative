@@ -23,4 +23,7 @@ app.use(cookieParser());
 const users = require("./users.js");
 app.use("/api/users", users.routes);
 
+const submissions = require("./submissions.js");
+app.use("/api/submissions", submissions.routes);
+
 app.listen(8882, () => console.log('Server listening on port 8882!'));
