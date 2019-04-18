@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     user: localStorage.getItem('authuser') || null,
     leaderboard: null,
+    twitchStreams: null,
   },
   mutations: {
     setUser(state, user) {
@@ -22,6 +23,11 @@ export default new Vuex.Store({
 
     setLeaderboard(state, leaderboard) {
         state.leaderboard = leaderboard;
+    },
+
+    setTwitchStreams(state, twitchStreams) {
+        const sorted = [...twitchStreams].sort((first, second) => first.viewer_count < second.viewer_count)
+        state.twitchStreams = sorted;
     }
   },
   actions: {
@@ -65,6 +71,20 @@ export default new Vuex.Store({
       try {
         let response = await axios.get("/api/users/leaderboard");
         context.commit('setLeaderboard', response.data);
+        return "";
+      } catch (error) {
+        return "";
+      }
+    },
+    async getTwitchStreams(context) {
+      try {
+        const client = axios.create({
+          baseURL: 'https://api.twitch.tv/helix/streams',
+          timeout: 1000,
+          headers: {'Client-ID': '5frojjbfio2gqpce21dzbecabm1tsg'}
+        });
+        let response = await client.get("/", {params: {game_id: '11989'}});
+        context.commit('setTwitchStreams', response.data.data);
         return "";
       } catch (error) {
         return "";
