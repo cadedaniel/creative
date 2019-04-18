@@ -73,7 +73,7 @@
             </v-container>
         </v-content>
         <v-footer app fixed>
-            <span>&copy; 2019 Cade Daniel</span>
+            <span>&copy; 2019 Cade Daniel. <a href="https://github.com/cadedaniel/creative">GitHub</a></span>
         </v-footer>
     </v-app>
 </template>
